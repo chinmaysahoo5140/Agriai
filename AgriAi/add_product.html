@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Lexend%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet"/>
+<title>AgriAi - Add Product</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+:root {
+  --primary-color: #38a169; /* A strong, verdant green */
+  --primary-dark: #2f855a; /* A darker green for hover effects */
+  --accent-color: #3498db; /* A vibrant blue for accents */
+  --background-color: #eef2f8; /* A very light blue-gray for the body */
+  --card-background: #ffffff; /* White card background */
+  --text-color: #1a202c; /* A deep, dark gray for text */
+  --input-border: #cbd5e0; /* A light, neutral border */
+  --placeholder-color: #a0aec0;
+}
+
+body {
+  min-height: max(884px, 100dvh);
+  background-color: var(--background-color);
+  background-image: url('https://images.unsplash.com/photo-1579621379165-d0554160a5e2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  transition: background-color 0.5s ease;
+}
+
+body::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(238, 242, 248, 0.7); /* Lighter overlay to ensure readability */
+  z-index: -1;
+}
+
+/* Fade-in animation for all elements */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animated-element {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+/* Hover effects for buttons and links */
+.hover-btn-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-btn-effect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(56, 161, 105, 0.25);
+  transition: all 0.3s ease;
+}
+
+#message-box {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: none;
+  animation: fadeIn 0.5s ease-out;
+}
+.message-success { background-color: #d4edda; color: #155724; }
+.message-error { background-color: #f8d7da; color: #721c24; }
+</style>
+</head>
+<body class="bg-gray-50">
+<div id="message-box"></div>
+<div class="relative flex size-full min-h-screen flex-col justify-between group/design-root overflow-x-hidden" style='font-family: Lexend, "Noto Sans", sans-serif;'>
+<div class="flex flex-col">
+  <header class="flex items-center bg-white p-4 shadow-sm animated-element">
+    <a class="text-gray-700 hover:text-[var(--primary-color)] hover-btn-effect" href="index.html">
+      <span class="material-icons">arrow_back_ios</span>
+    </a>
+    <h1 class="text-lg font-bold text-gray-900 flex-1 text-center">Add Product</h1>
+  </header>
+  <main class="p-6 space-y-6">
+    <div class="space-y-4">
+      <div class="animated-element delay-100">
+        <label class="text-sm font-medium text-gray-700 block mb-2" for="product-name">Product Name</label>
+        <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-md text-gray-900 focus:outline-0 focus:ring-2 focus:ring-[var(--primary-color)] border-gray-300 bg-white h-12 placeholder:text-gray-400 p-3 text-base font-normal leading-normal" id="product-name" placeholder="e.g. Fresh Organic Milk"/>
+      </div>
+      <div class="animated-element delay-200">
+        <label class="text-sm font-medium text-gray-700 block mb-2" for="category">Category</label>
+        <select class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-md text-gray-900 focus:outline-0 focus:ring-2 focus:ring-[var(--primary-color)] border-gray-300 bg-white h-12 p-3 text-base font-normal leading-normal" id="category">
+          <option disabled="" selected="">Select a category</option>
+          <option value="dairy">Dairy</option>
+          <option value="produce">Produce</option>
+          <option value="meat">Meat</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="animated-element delay-300">
+        <label class="text-sm font-medium text-gray-700 block mb-2" for="description">Description</label>
+        <textarea class="form-textarea flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded-md text-gray-900 focus:outline-0 focus:ring-2 focus:ring-[var(--primary-color)] border-gray-300 bg-white min-h-32 placeholder:text-gray-400 p-3 text-base font-normal leading-normal" id="description" placeholder="Describe your product in detail..."></textarea>
+      </div>
+      <div class="grid grid-cols-2 gap-4 animated-element delay-400">
+        <div>
+          <label class="text-sm font-medium text-gray-700 block mb-2" for="price">Price</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">₹</span>
+            <input class="form-input pl-7 flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-md text-gray-900 focus:outline-0 focus:ring-2 focus:ring-[var(--primary-color)] border-gray-300 bg-white h-12 placeholder:text-gray-400 p-3 text-base font-normal leading-normal" id="price" placeholder="0.00" type="number"/>
+          </div>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-gray-700 block mb-2" for="quantity">Quantity</label>
+          <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-md text-gray-900 focus:outline-0 focus:ring-2 focus:ring-[var(--primary-color)] border-gray-300 bg-white h-12 placeholder:text-gray-400 p-3 text-base font-normal leading-normal" id="quantity" placeholder="e.g. 50" type="number"/>
+        </div>
+      </div>
+    </div>
+    <div class="animated-element delay-500">
+      <label class="text-sm font-medium text-gray-700 block mb-2">Product Images</label>
+      <div class="flex flex-col items-center gap-4 rounded-md border-2 border-dashed border-gray-300 px-6 py-10 text-center">
+        <span class="material-icons text-4xl text-gray-400">cloud_upload</span>
+        <p class="text-sm font-medium text-gray-700">Drag &amp; drop files or</p>
+        <button id="browse-btn" class="flex items-center justify-center rounded-md h-10 px-4 bg-white text-gray-700 text-sm font-medium border border-gray-300 hover:bg-gray-100 hover-btn-effect">
+          Browse Files
+        </button>
+        <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+      </div>
+    </div>
+  </main>
+</div>
+<footer class="bg-white p-4 shadow-sm-top animated-element delay-600">
+  <button id="save-btn" class="w-full flex items-center justify-center rounded-md h-12 px-5 bg-[var(--primary-color)] text-white text-base font-bold hover:bg-opacity-90 hover-btn-effect">
+    Save Product
+  </button>
+</footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const productNameInput = document.getElementById('product-name');
+  const categorySelect = document.getElementById('category');
+  const descriptionTextarea = document.getElementById('description');
+  const priceInput = document.getElementById('price');
+  const quantityInput = document.getElementById('quantity');
+  const saveBtn = document.getElementById('save-btn');
+  const browseBtn = document.getElementById('browse-btn');
+  const messageBox = document.getElementById('message-box');
+
+  // Function to display a message to the user
+  function showMessage(message, isError = false) {
+    messageBox.textContent = message;
+    messageBox.className = ''; // Clear all classes
+    messageBox.classList.add('animated-element');
+    messageBox.classList.add(isError ? 'message-error' : 'message-success');
+    messageBox.style.display = 'block';
+
+    // Hide the message after a few seconds
+    setTimeout(() => {
+      messageBox.style.display = 'none';
+    }, 4000);
+  }
+
+  // Handle "Browse Files" button click (for demonstration)
+  browseBtn.addEventListener('click', () => {
+    showMessage("Image upload functionality would be implemented here. It requires a backend service.", false);
+  });
+
+  // Handle "Save Product" button click
+  saveBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    const productName = productNameInput.value.trim();
+    const category = categorySelect.value;
+    const description = descriptionTextarea.value.trim();
+    const price = priceInput.value.trim();
+    const quantity = quantityInput.value.trim();
+
+    // Basic validation
+    if (!productName || category === 'Select a category' || !description || !price || !quantity) {
+      showMessage("Please fill out all fields before saving.", true);
+      return;
+    }
+
+    // Prepare product data (this would be sent to a backend in a real app)
+    const productData = {
+      productName,
+      category,
+      description,
+      price: parseFloat(price),
+      quantity: parseInt(quantity, 10),
+      // Image data would be handled here
+    };
+
+    console.log("Saving product data:", productData);
+    showMessage("Product saved successfully!", false);
+
+    // Optional: Clear form fields after successful save
+    productNameInput.value = '';
+    categorySelect.value = 'Select a category';
+    descriptionTextarea.value = '';
+    priceInput.value = '';
+    quantityInput.value = '';
+  });
+});
+</script>
+</body>
+</html>

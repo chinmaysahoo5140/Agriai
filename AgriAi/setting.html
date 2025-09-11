@@ -1,0 +1,162 @@
+<html><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Lexend%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<title>Stitch Design</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+      :root {
+        --primary-color: #1193d4;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+    .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0.5rem); }
+  </style>
+  <script src="setting.js"></script>
+  </head>
+<body>
+<div class="relative flex size-full min-h-screen flex-col bg-white justify-between group/design-root overflow-x-hidden" style='font-family: Lexend, "Noto Sans", sans-serif;'>
+<div>
+<div class="flex items-center bg-white p-4 justify-between sticky top-0 z-10 border-b border-slate-200">
+<div class="text-slate-800 flex size-8 shrink-0 items-center justify-center rounded-full bg-slate-100" data-icon="ArrowLeft" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="20px" viewBox="0 0 256 256" width="20px" xmlns="http://www.w3.org/2000/svg">
+<path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-8">Settings</h2>
+</div>
+<div class="p-6 space-y-8">
+<div>
+<a class="text-slate-500 text-sm font-semibold tracking-wide px-2 pb-2"  >Language</a>
+<div class="flex items-center gap-4 bg-slate-50 p-4 rounded-lg justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="text-slate-500" data-icon="Globe" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM104,72a32,32,0,0,1,32,32c0,16.27-9,30.64-16,32v8a8,8,0,0,1-16,0v-8c-7-.36-16-15.73-16-32A32,32,0,0,1,104,72Zm-48,56a8,8,0,0,1,0-16c4.27,0,16,1.15,16,10,0,10-24,14-24,32v4a8,8,0,0,1-16,0v-4c0-11.19,10.37-18.9,24-26Zm112,0c13.63,7.1,24,14.81,24,26v4a8,8,0,0,1-16,0v-4c0-8.85-11.73-10-16-10a8,8,0,0,1,0-16c11.13,0,16,4.08,16,10,0-5.45-8.27-8-16-8a8,8,0,0,1,0-16Zm16-24c0-8.85-11.73-10-16-10a8,8,0,0,1,0-16c11.13,0,16,4.08,16,10,0-5.45-8.27-8-16-8a8,8,0,0,1,0-16c4.27,0,16,1.15,16,10Z"></path>
+</svg>
+</div>
+<a class="text-slate-800 text-base font-medium leading-normal" href="language.html">Language</a>
+</div>
+<div class="flex items-center gap-2">
+<p class="text-slate-500 text-base font-normal" >English</p>
+<div class="text-slate-400 flex size-5 items-center justify-center" data-icon="CaretRight" data-size="24px" data-weight="regular" >
+<svg fill="currentColor" height="20px" viewBox="0 0 256 256" width="20px" xmlns="http://www.w3.org/2000/svg"href="language.html">
+<path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-slate-500 text-sm font-semibold tracking-wide px-2 pb-2">Theme</h3>
+<div class="bg-slate-50 p-4 rounded-lg space-y-4">
+<div class="flex items-center gap-4 justify-between">
+<div class="flex items-center gap-4">
+<div class="text-slate-500" data-icon="Sun" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM128,40V16a8,8,0,0,0-16,0V40a8,8,0,0,0,16,0Zm72,32a8,8,0,0,0,5.66-2.34l16-16a8,8,0,1,0-11.32-11.32l-16,16A8,8,0,0,0,200,72ZM56,72a8,8,0,0,0,5.66,2.34A8,8,0,0,0,67.31,68l-16-16A8,8,0,0,0,40,63.31l16,16A8,8,0,0,0,56,72ZM216,120H192a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16ZM64,120H40a8,8,0,0,0,0,16H64a8,8,0,0,0,0-16Zm136,77.66-16-16a8,8,0,1,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM67.31,188,56,199.31a8,8,0,0,0,11.31,11.32l11.32-11.32A8,8,0,0,0,67.31,188Zm52.69,28V240a8,8,0,0,0,16,0V216a8,8,0,0,0-16,0Z"></path>
+</svg>
+</div>
+<p class="text-slate-800 text-base font-medium leading-normal">Dark Mode</p>
+</div>
+<label class="relative flex h-[31px] w-[51px] cursor-pointer items-center rounded-full border-none bg-slate-200 p-0.5 has-[:checked]:justify-end has-[:checked]:bg-[var(--primary-color)]">
+<div class="h-full w-[27px] rounded-full bg-white shadow-sm"></div>
+<input class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-slate-500 text-sm font-semibold tracking-wide px-2 pb-2">General</h3>
+<div class="bg-slate-50 p-4 rounded-lg divide-y divide-slate-200">
+<div class="flex items-center gap-4 justify-between py-2">
+<div class="flex items-center gap-4">
+<div class="text-slate-500" data-icon="Bell" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.25,62.38-13.8,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c6.43-11.23,16-42.23,16-80a64,64,0,1,1,128,0c0,37.77,9.57,68.77,16,80Z"></path>
+</svg>
+</div>
+<p class="text-slate-800 text-base font-medium leading-normal">Notifications</p>
+</div>
+<label class="relative flex h-[31px] w-[51px] cursor-pointer items-center rounded-full border-none bg-slate-200 p-0.5 has-[:checked]:justify-end has-[:checked]:bg-[var(--primary-color)]">
+<div class="h-full w-[27px] rounded-full bg-white shadow-sm"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+<div class="flex items-center gap-4 justify-between py-2">
+<div class="flex items-center gap-4">
+<div class="text-slate-500" data-icon="MapPin" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M128,24a88,88,0,0,0-88,88c0,75.3,80,132.17,83.41,134.55a8,8,0,0,0,9.18,0C136,244.17,216,187.3,216,112A88,88,0,0,0,128,24Zm0,192c-29.25,0-64-42.59-64-104a64,64,0,1,1,128,0C192,173.41,157.25,216,128,216Zm0-96a32,32,0,1,0-32-32A32,32,0,0,0,128,120Zm0,48a16,16,0,1,1,16-16A16,16,0,0,1,128,168Z"></path>
+</svg>
+</div>
+<p class="text-slate-800 text-base font-medium leading-normal">Location Services</p>
+</div>
+<label class="relative flex h-[31px] w-[51px] cursor-pointer items-center rounded-full border-none bg-slate-200 p-0.5 has-[:checked]:justify-end has-[:checked]:bg-[var(--primary-color)]">
+<div class="h-full w-[27px] rounded-full bg-white shadow-sm"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+<div class="flex items-center gap-4 justify-between py-2 cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="text-slate-500" data-icon="Info" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM120,96a8,8,0,0,1,8-8h0a8,8,0,0,1,8,8v8a8,8,0,0,1-8,8h0a8,8,0,0,1-8-8Zm24,32H112a8,8,0,0,0,0,16h8v32h-8a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16h-8V136h8a8,8,0,0,0,0-16Z"></path>
+</svg>
+</div>
+<p class="text-slate-800 text-base font-medium leading-normal">About</p>
+</div>
+<div class="text-slate-400 flex size-5 items-center justify-center" data-icon="CaretRight" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="20px" viewBox="0 0 256 256" width="20px" xmlns="http://www.w3.org/2000/svg">
+<path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sticky bottom-0">
+<div class="flex gap-2 border-t border-slate-200 bg-white px-4 pb-3 pt-2">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500" href="#">
+<div class="flex h-8 items-center justify-center" data-icon="House" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M218.83,103.77l-80-75.48a1.14,1.14,0,0,1-.11-.11,16,16,0,0,0-21.53,0l-.11.11L37.17,103.77A16,16,0,0,0,32,115.55V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V160h32v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V115.55A16,16,0,0,0,218.83,103.77ZM208,208H160V160a16,16,0,0,0-16-16H112a16,16,0,0,0-16,16v48H48V115.55l.11-.1L128,40l79.9,75.43.11.1Z"></path>
+</svg>
+</div>
+<p class="text-xs font-medium leading-normal tracking-wide">Dashboard</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500" href="#">
+<div class="flex h-8 items-center justify-center" data-icon="Sun" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"></path>
+</svg>
+</div>
+<p class="text-xs font-medium leading-normal tracking-wide">Weather</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500" href="#">
+<div class="flex h-8 items-center justify-center" data-icon="Plant" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M247.63,39.89a8,8,0,0,0-7.52-7.52c-51.76-3-93.32,12.74-111.18,42.22-11.8,19.49-11.78,43.16-.16,65.74a71.34,71.34,0,0,0-14.17,27L98.33,151c7.82-16.33,7.52-33.35-1-47.49-13.2-21.79-43.67-33.47-81.5-31.25a8,8,0,0,0-7.52,7.52c-2.23,37.83,9.46,68.3,31.25,81.5A45.82,45.82,0,0,0,63.44,168,54.58,54.58,0,0,0,87,162.33l25,25V216a8,8,0,0,0,16,0V186.51a55.61,55.61,0,0,1,12.27-35,73.91,73.91,0,0,0,33.31,8.4,60.9,60.9,0,0,0,31.83-8.86C234.89,133.21,250.67,91.65,247.63,39.89ZM47.81,147.6C32.47,138.31,23.79,116.32,24,88c28.32-.24,50.31,8.47,59.6,23.81,4.85,8,5.64,17.33,2.46,26.94L61.65,114.34a8,8,0,0,0-11.31,11.31l24.41,24.41C65.14,153.24,55.82,152.45,47.81,147.6Zm149.31-10.22c-13.4,8.11-29.15,8.73-45.15,2l53.69-53.7a8,8,0,0,0-11.31-11.31L140.65,128c-6.76-16-6.15-31.76,2-45.15,13.94-23,47-35.82,89.33-34.83C232.94,90.34,220.14,123.44,197.12,137.38Z"></path>
+</svg>
+</div>
+<p class="text-xs font-medium leading-normal tracking-wide">Products</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-[var(--primary-color)]" href="#">
+<div class="flex h-8 items-center justify-center" data-icon="User" data-size="24px" data-weight="fill">
+<svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M230.93,220a8,8,0,0,1-6.93,4H32a8,8,0,0,1-6.92-12c15.23-26.33,38.7-45.21,66.09-54.16a72,72,0,1,1,73.66,0c27.39,8.95,50.86,27.83,66.09,54.16A8,8,0,0,1,230.93,220Z"></path>
+</svg>
+</div>
+<p class="text-xs font-medium leading-normal tracking-wide">Account</p>
+</a>
+</div>
+</div>
+</div>
+
+</body></html>

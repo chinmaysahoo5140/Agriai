@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Lexend%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet"/>
+<title>AgriAi - My Products</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+:root {
+  --primary-color: #38a169;
+  --primary-dark: #2f855a;
+  --accent-color: #3498db;
+  --background-color: #eef2f8;
+  --card-background: #ffffff;
+  --text-color: #1a202c;
+  --input-border: #cbd5e0;
+}
+body {
+  min-height: max(884px, 100dvh);
+  background-color: var(--background-color);
+  background-image: url('https://images.unsplash.com/photo-1579621379165-d0554160a5e2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  transition: background-color 0.5s ease;
+}
+body::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(238, 242, 248, 0.7);
+  z-index: -1;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animated-element {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.hover-btn-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-btn-effect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.product-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.product-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+.text-xxs {
+  font-size: 0.65rem;
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<div class="relative flex size-full min-h-screen flex-col justify-between group/design-root overflow-x-hidden" style='font-family: Lexend, "Noto Sans", sans-serif;'>
+<div class="flex flex-col">
+  <header class="flex items-center bg-white p-4 shadow-sm animated-element">
+    <a class="text-gray-700 hover:text-[var(--primary-color)] hover-btn-effect" href="add_product.html">
+      <span class="material-icons">add</span>
+    </a>
+    <h1 class="text-lg font-bold text-gray-900 flex-1 text-center">My Products</h1>
+    <div id="user-id-display" class="text-sm text-gray-500 truncate max-w-[100px]"></div>
+  </header>
+  <main class="p-6">
+    <div id="product-list" class="space-y-4">
+      <div id="loading" class="text-center text-gray-500 mt-8 animated-element delay-100">
+        <p>Loading products...</p>
+      </div>
+    </div>
+  </main>
+</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+  import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+  import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
+  const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+  
+  let userId = null;
+
+  async function authenticateUser() {
+    const customAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+    if (customAuthToken) {
+      try {
+        await signInWithCustomToken(auth, customAuthToken);
+        console.log("Signed in with custom token.");
+      } catch (error) {
+        console.error("Error signing in with custom token:", error);
+        await signInAnonymously(auth);
+      }
+    } else {
+      await signInAnonymously(auth);
+      console.log("Signed in anonymously.");
+    }
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      userId = user.uid;
+      userIdDisplayEl.textContent = `User: ${userId}`;
+      console.log("User is authenticated. UID:", userId);
+      fetchProducts(userId);
+    } else {
+      authenticateUser();
+    }
+  });
+
+  const productListEl = document.getElementById('product-list');
+  const loadingEl = document.getElementById('loading');
+  const userIdDisplayEl = document.getElementById('user-id-display');
+
+  function fetchProducts(currentUserId) {
+    const productsRef = collection(db, 'artifacts/__app_id/users/' + currentUserId + '/products');
+    const productsQuery = query(productsRef);
+
+    onSnapshot(productsQuery, (snapshot) => {
+      loadingEl.classList.add('hidden');
+      if (snapshot.empty) {
+        productListEl.innerHTML = '<p class="text-center text-gray-500 mt-8 animated-element">No products added yet.</p>';
+        return;
+      }
+      
+      let productHtml = '';
+      snapshot.forEach(doc => {
+        const product = doc.data();
+        const docId = doc.id;
+        const createdAt = product.createdAt ? product.createdAt.toDate().toLocaleString() : 'N/A';
+        productHtml += `
+          <div id="${docId}" class="bg-white p-4 rounded-lg shadow-sm product-card animated-element">
+            <h2 class="text-lg font-bold text-gray-900">${product.productName}</h2>
+            <p class="text-sm text-gray-600">${product.category}</p>
+            <p class="mt-2 text-gray-800">${product.description}</p>
+            <div class="mt-4 flex justify-between items-center">
+              <span class="text-lg font-black text-[var(--primary-color)]">₹${product.price}</span>
+              <span class="text-sm text-gray-500">Qty: ${product.quantity}</span>
+            </div>
+            <p class="text-xxs text-gray-400 mt-2">Added on: ${createdAt}</p>
+          </div>
+        `;
+      });
+      productListEl.innerHTML = productHtml;
+    });
+  }
+</script>
+</body>
+</html>

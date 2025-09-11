@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&family=Lexend%3Awght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet"/>
+<title>AgriAi - Weather</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+:root {
+  --primary-color: #38a169;
+  --primary-dark: #2f855a;
+  --accent-color: #3498db;
+  --background-color: #eef2f8;
+  --card-background: #ffffff;
+  --text-color: #1a202c;
+  --input-border: #010911;
+  --placeholder-color: #223958;
+}
+body {
+  min-height: max(884px, 100dvh);
+  background-color: var(--background-color);
+  background-image: url('weather.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  transition: background-color 0.5s ease;
+}
+body::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(8, 49, 109, 0.7);
+  z-index: -1;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInFromRight {
+  from { opacity: 0; transform: translateX(100%) scale(0.8); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes slideOutToRight {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to { opacity: 0; transform: translateX(100%) scale(0.8); }
+}
+.animated-element {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
+.hover-btn-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-btn-effect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.text-xxs {
+  font-size: 0.65rem;
+  
+}
+.chat-window {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 350px;
+  height: 450px;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 50;
+  transform-origin: bottom right;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.chat-window.show {
+  animation: slideInFromRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.chat-window.hide {
+  animation: slideOutToRight 0.3s ease-in;
+}
+.chat-window.minimized {
+  transform: scale(0) translateX(50px);
+  opacity: 0;
+  pointer-events: none;
+}
+.chat-header {
+  display: flex;
+}
+.chat-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+.chat-footer {
+  display: flex;
+}
+.chat-message {
+  padding: 8px 12px;
+  border-radius: 0.75rem;
+  max-width: 80%;
+  word-wrap: break-word;
+  margin-bottom: 8px;
+  animation: fadeIn 0.3s ease-out;
+}
+.user-message {
+  background-color: #e2e8f0;
+  align-self: flex-end;
+  margin-left: auto;
+}
+.ai-message {
+  background-color: #eff6ff;
+  align-self: flex-start;
+  margin-right: auto;
+}
+.floating-chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 9999px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 60;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform-origin: center;
+  opacity: 0;
+  transform: scale(0);
+  pointer-events: none;
+}
+.floating-chat-button.show {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: all;
+}
+.floating-chat-button:hover {
+  transform: scale(1.1);
+  background-color: #2980b9;
+}
+.error-message {
+  background-color: #fed7d7;
+  color: #c53030;
+  padding: 12px;
+  border-radius: 0.75rem;
+  margin-bottom: 16px;
+  border: 1px solid #feb2b2;
+}
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  background-color: #eff6ff;
+  border-radius: 0.75rem;
+  margin-bottom: 8px;
+  max-width: 80%;
+}
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #6b7280;
+  border-radius: 50%;
+  animation: typing 1.4s infinite ease-in-out;
+}
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+@keyframes typing {
+  0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+/* Custom scrollbar for chat */
+.chat-content::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.chat-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+.chat-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-fadeIn {
+  animation: fadeInScale 0.3s ease-out;
+}
+
+</style>
+</head>
+<body class="bg-gray-50">
+<div class="relative flex size-full min-h-screen flex-col justify-between group/design-root overflow-x-hidden" style='font-family: Lexend, "Noto Sans", sans-serif;'>
+<div class="flex flex-col">
+  <header class="flex items-center bg-white p-4 shadow-sm animated-element">
+    <a class="text-gray-700 hover:text-[var(--primary-color)] hover-btn-effect" href="/">
+      <span class="material-icons">arrow_back_ios</span>
+    </a>
+    <h1 class="text-lg font-bold text-gray-900 flex-1 text-center">Weather & Recommendations</h1>
+  </header>
+  <main class="p-6">
+    <div class="relative w-full mb-6 animated-element delay-100">
+      <input class="form-input w-full rounded-full border-gray-300 bg-white h-12 placeholder:text-gray-500 pl-12 pr-4 text-base font-normal focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] transition-shadow" placeholder="Search for a city..." id="city-input"/>
+      <div class="text-gray-400 absolute left-4 top-1/2 -translate-y-1/2">
+        <span class="material-icons">search</span>
+      </div>
+    </div>
+    
+    <div id="weather-results" class="space-y-6">
+      <div id="loading" class="text-center text-gray-500 mt-8 animated-element delay-200 hidden">
+        <div class="inline-flex items-center gap-2">
+          <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-[var(--primary-color)]"></div>
+          <p>Loading weather data...</p>
+        </div>
+      </div>
+
+      <div id="error-message" class="error-message hidden">
+        <p id="error-text">An error occurred while fetching weather data.</p>
+      </div>
+
+      <!-- Current Conditions Card -->
+      <div id="current-conditions" class="bg-white rounded-xl shadow-lg p-6 mb-6 hidden animated-element delay-300">
+        <h2 class="text-gray-800 text-xl font-bold leading-tight tracking-[-0.015em] mb-4">Current Conditions</h2>
+        <div class="mb-4">
+          <h3 id="current-location" class="text-lg font-semibold text-gray-700">--</h3>
+        </div>
+        <div class="grid grid-cols-3 gap-4 text-center">
+          <div class="flex flex-col items-center p-2 rounded-lg bg-gray-100">
+            <div id="current-temp" class="text-blue-500 text-2xl font-bold">--°</div>
+            <p id="current-description" class="text-gray-500 text-xs">Loading...</p>
+          </div>
+          <div class="flex flex-col items-center justify-center p-2 rounded-lg bg-gray-100">
+            <p id="current-humidity" class="text-gray-700 text-lg font-semibold">--%</p>
+            <p class="text-gray-500 text-xs">Humidity</p>
+          </div>
+          <div class="flex flex-col items-center justify-center p-2 rounded-lg bg-gray-100">
+            <p id="current-wind" class="text-gray-700 text-lg font-semibold">-- km/h</p>
+            <p class="text-gray-500 text-xs">Wind</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Forecast Card -->
+      <div id="forecast-card" class="bg-white rounded-xl shadow-lg p-6 mb-6 hidden animated-element delay-400">
+        <h2 class="text-gray-800 text-xl font-bold leading-tight tracking-[-0.015em] mb-4">Weather Forecast</h2>
+        <div id="forecast-list" class="space-y-3">
+          <!-- Forecast items will be injected here -->
+        </div>
+      </div>
+
+      <!-- AI Recommendations Card -->
+      <div id="recommendations-card" class="bg-[var(--primary-color)] text-white rounded-xl shadow-lg p-6 hidden animated-element delay-500">
+        <h2 class="text-xl font-bold leading-tight tracking-[-0.015em] mb-2">AI Crop Recommendations</h2>
+        <p class="text-green-100 text-sm font-normal leading-normal mb-4">Based on the current weather conditions and forecast, here are personalized recommendations for your farming activities:</p>
+        <div id="recommendations-list" class="space-y-3">
+          <!-- Recommendation items will be injected here -->
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Chatbot Window -->
+<div id="chat-window" class="chat-window hidden">
+  <div class="bg-[var(--primary-color)] p-4 rounded-t-xl flex justify-between items-center text-white chat-header">
+    <h3 class="font-bold">AgriAi Assistant</h3>
+    <div class="flex space-x-2">
+      <button id="minimize-chat" class="material-icons hover:bg-green-600 p-1 rounded cursor-pointer transition-colors" title="Minimize chat">minimize</button>
+      <button id="close-chat" class="material-icons hover:bg-green-600 p-1 rounded cursor-pointer transition-colors" title="Close chat">close</button>
+    </div>
+  </div>
+  <div id="chat-box" class="flex-grow p-4 space-y-4 overflow-y-auto chat-content">
+    <div class="ai-message chat-message">
+      Hello! I'm your AI agricultural assistant. I can help you with farming questions, crop advice, weather impacts, and analyze agricultural images. How can I assist you today?
+    </div>
+  </div>
+  <div class="p-4 border-t border-gray-200 chat-footer">
+    <div class="flex space-x-2 w-full">
+      <input id="chat-input" type="text" placeholder="Ask me about farming, crops, weather..." class="flex-grow rounded-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent transition-all"/>
+      <input type="file" id="image-upload" accept="image/*" class="hidden">
+      <label for="image-upload" class="bg-gray-300 hover:bg-gray-400 transition-colors rounded-full size-10 flex items-center justify-center cursor-pointer" title="Upload image">
+        <span class="material-icons text-sm">add_a_photo</span>
+      </label>
+      <button id="send-chat-btn" class="bg-[var(--primary-color)] text-white rounded-full size-10 flex items-center justify-center hover:bg-[var(--primary-dark)] transition-colors" title="Send message">
+        
+        <span class="material-icons text-sm">send</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating chat button -->
+<div id="floating-chat-btn" class="floating-chat-button" title="Open chat">
+  <span class="material-icons">chat</span>
+</div>
+
+<footer class="sticky bottom-0 bg-white border-t border-gray-200 shadow-t-sm z-10 animated-element delay-600">
+  <nav class="flex justify-around items-center h-16">
+    <a class="flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-[var(--primary-color)] transition-colors" href="index.html">
+      <span class="material-icons">home</span>
+      <p class="text-xs font-medium tracking-[0.015em]">Dashboard</p>
+    </a>
+    <a class="flex flex-col items-center justify-center gap-1 text-[var(--primary-color)] font-semibold" href="weather.html">
+      <span class="material-icons">wb_sunny</span>
+      <p class="text-xs font-medium tracking-[0.015em]">Weather</p>
+    </a>
+    <a class="flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-[var(--primary-color)] transition-colors" href="product.html">
+      <span class="material-icons">inventory_2</span>
+      <p class="text-xs font-medium tracking-[0.015em]">Products</p>
+ 
+    </a>
+    <a class="flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-[var(--primary-color)] transition-colors" href="signup.html">
+      <span class="material-icons">person</span>
+      <p class="text-xs font-medium tracking-[0.015em]">Account</p>
+    </a>
+  </nav>
+  <div class="flex justify-center items-center py-2 bg-gray-100 text-sm text-gray-700">
+    <span class="material-icons text-sm mr-1">phone</span>
+    Toll-Free Number: 1800-2023-AGRI
+  </div>
+  <div class="flex justify-center py-2 bg-[var(--accent-color)] text-white text-sm cursor-pointer hover:bg-blue-600 transition-colors" id="chat-toggle-btn">
+    Start Chat
+  </div>
+</footer>
+</div>
+<!-- Expert Advice Floating Button -->
+<button id="expert-btn" 
+  class="fixed bottom-28 right-6 bg-[var(--primary-color)] text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-[var(--primary-dark)] transition">
+  <span class="material-icons">psychology</span>
+</button>
+<!-- Expert Advice Modal -->
+<div id="expert-modal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+  <div class="bg-white w-96 rounded-xl shadow-xl p-6 animate-fadeIn">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+        <span class="material-icons text-[var(--primary-color)]">psychology</span>
+        Expert Advice
+      </h2>
+      <button id="close-expert" class="material-icons text-gray-600 hover:text-red-500">close</button>
+    </div>
+    <p class="text-gray-600 text-sm mb-3">Ask your farming or crop-related questions and get expert suggestions.</p>
+    <textarea id="expert-input" rows="3" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-[var(--primary-color)] mb-3"></textarea>
+    <button id="ask-expert" class="bg-[var(--primary-color)] text-white px-4 py-2 rounded-lg hover:bg-[var(--primary-dark)] transition w-full">Ask Expert</button>
+    <div id="expert-response" class="mt-4 text-sm text-gray-700 hidden"></div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const cityInput = document.getElementById('city-input');
+  const weatherResults = document.getElementById('weather-results');
+  const loadingEl = document.getElementById('loading');
+  const errorMessageEl = document.getElementById('error-message');
+  const errorTextEl = document.getElementById('error-text');
+  const currentTempEl = document.getElementById('current-temp');
+  const currentDescriptionEl = document.getElementById('current-description');
+  const currentHumidityEl = document.getElementById('current-humidity');
+  const currentWindEl = document.getElementById('current-wind');
+  const currentLocationEl = document.getElementById('current-location');
+  const currentConditionsCard = document.getElementById('current-conditions');
+  const forecastListEl = document.getElementById('forecast-list');
+  const forecastCard = document.getElementById('forecast-card');
+  const recommendationsListEl = document.getElementById('recommendations-list');
+  const recommendationsCard = document.getElementById('recommendations-card');
+  
+  // Chatbot elements
+  const chatWindow = document.getElementById('chat-window');
+  const chatToggleBtn = document.getElementById('chat-toggle-btn');
+  const closeChatBtn = document.getElementById('close-chat');
+  const minimizeChatBtn = document.getElementById('minimize-chat');
+  const floatingChatBtn = document.getElementById('floating-chat-btn');
+  const chatBox = document.getElementById('chat-box');
+  const chatInput = document.getElementById('chat-input');
+  const sendChatBtn = document.getElementById('send-chat-btn');
+  const imageUploadInput = document.getElementById('image-upload');
+
+  // State management
+  let isChatOpen = false;
+  let isChatMinimized = false;
+  let isTyping = false;
+
+  // Weather search functionality
+  async function searchWeather(city) {
+    if (!city.trim()) {
+      showError('Please enter a city name.');
+      return;
+    }
+
+    const cleanCity = city.trim();
+    console.log(`Searching weather for: ${cleanCity}`);
+    
+    showLoading();
+    hideError();
+
+    try {
+      // Call the backend weather endpoint. The backend returns { ok: true, source: "mock"|"openweather", data: {...} }
+      const response = await fetch('/api/weather', { method: 'GET', headers: { 'Accept': 'application/json' } });
+      const data = await response.json();
+      hideLoading();
+
+      if (data && data.ok) {
+        // Pass the inner 'data' object to display function
+        displayWeatherData(data.data || {});
+      } else {
+        showError((data && data.error) || 'Failed to fetch weather data.');
+      }
+    } catch (error) {
+      hideLoading();
+      console.error('Weather fetch error:', error);
+      showError('Network error. Please check your connection and try again.');
+    }
+  }
+
+  function displayWeatherData(data) {
+    // Map backend data structure to UI
+    const w = data || {};
+    // Current conditions
+    currentLocationEl.textContent = w.location || '--';
+    currentTempEl.textContent = w.current && w.current.temp_c != null ? `${w.current.temp_c}°` : '--';
+    currentDescriptionEl.textContent = (w.current && w.current.condition) || '--';
+    currentHumidityEl.textContent = w.current && w.current.humidity != null ? `${w.current.humidity}%` : '--';
+    // backend doesn't provide wind in mock; show placeholder
+    currentWindEl.textContent = (w.current && (w.current.wind_kph || w.current.wind)) ? `${w.current.wind_kph || w.current.wind} km/h` : '-- km/h';
+    currentConditionsCard.classList.remove('hidden');
+
+    // Forecast
+    forecastListEl.innerHTML = '';
+    (w.daily || []).forEach((day, index) => {
+      const dayLabel = day.day || (index === 0 ? 'Today' : `Day ${index + 1}`);
+      const tempMin = day.min != null ? day.min : '--';
+      const tempMax = day.max != null ? day.max : '--';
+      const desc = day.description || '';
+
+      const forecastItem = document.createElement('div');
+      forecastItem.className = 'flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors';
+      forecastItem.innerHTML = `
+        <div class="flex items-center space-x-3">
+          <div class="text-sm font-medium text-gray-800 min-w-[60px]">${dayLabel}</div>
+          <div class="text-xs text-gray-500">${desc}</div>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-sm font-semibold text-gray-700">${tempMin}°</span>
+          <span class="text-gray-400">/</span>
+          <span class="text-sm font-semibold text-gray-900">${tempMax}°</span>
+        </div>
+      `;
+      forecastListEl.appendChild(forecastItem);
+    });
+    if ((w.daily || []).length > 0) forecastCard.classList.remove('hidden');
+
+    // Recommendations: backend doesn't currently provide them. Hide card if none.
+    recommendationsListEl.innerHTML = '';
+    if (w.recommendations && w.recommendations.length) {
+      w.recommendations.forEach(rec => {
+        const recItem = document.createElement('div');
+        recItem.className = 'p-3 rounded-lg bg-green-600 bg-opacity-50 hover:bg-opacity-60 transition-all';
+        recItem.innerHTML = `<h3 class="font-semibold text-white mb-1">${rec.crop}</h3><p class="text-green-100 text-sm">${rec.reason}</p>`;
+        recommendationsListEl.appendChild(recItem);
+      });
+      recommendationsCard.classList.remove('hidden');
+    } else {
+      recommendationsCard.classList.add('hidden');
+    }
+  }
+
+  function showLoading() {
+    loadingEl.classList.remove('hidden');
+    hideAllCards();
+  }
+
+  function hideLoading() {
+    loadingEl.classList.add('hidden');
+  }
+
+  function showError(message) {
+    errorTextEl.textContent = message;
+    errorMessageEl.classList.remove('hidden');
+    hideAllCards();
+  }
+
+  function hideError() {
+    errorMessageEl.classList.add('hidden');
+  }
+
+  function hideAllCards() {
+    currentConditionsCard.classList.add('hidden');
+    forecastCard.classList.add('hidden');
+    recommendationsCard.classList.add('hidden');
+  }
+
+  // Event listeners for weather search
+  cityInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      searchWeather(cityInput.value);
+    }
+  });
+
+  // Chatbot functionality
+  function openChat() {
+    console.log('Opening chat');
+    isChatOpen = true;
+    isChatMinimized = false;
+    chatWindow.classList.remove('hidden', 'minimized');
+    chatWindow.classList.add('show');
+    chatToggleBtn.textContent = 'Close Chat';
+    floatingChatBtn.classList.remove('show');
+    
+    // Focus on input after animation
+    setTimeout(() => {
+      chatInput.focus();
+    }, 300);
+  }
+
+  function closeChat() {
+    console.log('Closing chat');
+    isChatOpen = false;
+    isChatMinimized = false;
+    chatWindow.classList.add('hide');
+    chatToggleBtn.textContent = 'Start Chat';
+    floatingChatBtn.classList.remove('show');
+    
+    // Actually hide after animation
+    setTimeout(() => {
+      chatWindow.classList.add('hidden');
+      chatWindow.classList.remove('show', 'hide');
+    }, 300);
+  }
+
+  function minimizeChat() {
+    console.log('Minimizing chat');
+    isChatMinimized = true;
+    chatWindow.classList.add('minimized');
+    floatingChatBtn.classList.add('show');
+    chatToggleBtn.textContent = 'Open Chat';
+  }
+
+  function maximizeChat() {
+    console.log('Maximizing chat');
+    isChatMinimized = false;
+    chatWindow.classList.remove('minimized');
+    floatingChatBtn.classList.remove('show');
+    chatToggleBtn.textContent = 'Close Chat';
+    chatInput.focus();
+  }
+
+  function addMessage(message, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `chat-message ${isUser ? 'user-message' : 'ai-message'}`;
+    messageDiv.textContent = message;
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function showTypingIndicator() {
+    if (isTyping) return;
+    isTyping = true;
+    
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'typing-indicator';
+    typingDiv.id = 'typing-indicator';
+    typingDiv.innerHTML = `
+      <span class="typing-dot"></span>
+      <span class="typing-dot"></span>
+      <span class="typing-dot"></span>
+    `;
+    chatBox.appendChild(typingDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function hideTypingIndicator() {
+    isTyping = false;
+    const typingDiv = document.getElementById('typing-indicator');
+    if (typingDiv) {
+      typingDiv.remove();
+    }
+  }
+
+  async function sendMessage(message) {
+    if (!message.trim()) return;
+
+    console.log('Sending chat message:', message);
+    addMessage(message, true);
+    chatInput.value = '';
+    showTypingIndicator();
+
+    try {
+      const response = await fetch('/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: message }),
+      });
+
+      const data = await response.json();
+      hideTypingIndicator();
+
+      if (data.success) {
+        addMessage(data.message);
+        // append an optional resource link for IPM (FAO Tanzania)
+        const ipmLink = document.createElement('span');
+        ipmLink.className = 'agri-link cursor-pointer underline text-xs';
+        ipmLink.dataset.url = 'http://www.fao.org/tanzania/ipm';
+        ipmLink.textContent = 'Find more about IPM from FAO Tanzania';
+        chatBox.appendChild(ipmLink);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } else {
+        addMessage(data.message || 'Sorry, I encountered an error. Please try again.');
+      }
+    } catch (error) {
+      hideTypingIndicator();
+      console.error('Chat error:', error);
+      addMessage('Network error. Please check your connection and try again.');
+    }
+  }
+
+  async function sendImage(file) {
+    if (!file) return;
+
+    console.log('Sending image:', file.name);
+    addMessage(`[Image uploaded: ${file.name}]`, true);
+    showTypingIndicator();
+
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const response = await fetch('/chat/image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+      hideTypingIndicator();
+
+      if (data.success) {
+        addMessage(data.message);
+        // append IPM resource link for image analysis results
+        const ipmLinkImg = document.createElement('span');
+        ipmLinkImg.className = 'agri-link cursor-pointer underline text-xs';
+        ipmLinkImg.dataset.url = 'http://www.fao.org/tanzania/ipm';
+        ipmLinkImg.textContent = 'Find more about IPM from FAO Tanzania';
+        chatBox.appendChild(ipmLinkImg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } else {
+        addMessage(data.message || 'Failed to analyze the image. Please try again.');
+      }
+    } catch (error) {
+      hideTypingIndicator();
+      console.error('Image analysis error:', error);
+      addMessage('Network error. Please check your connection and try again.');
+    }
+  }
+
+  // Chat event listeners
+  chatToggleBtn.addEventListener('click', () => {
+    if (isChatOpen && !isChatMinimized) {
+      closeChat();
+    } else if (isChatMinimized) {
+      maximizeChat();
+    } else {
+      openChat();
+    }
+  });
+
+  closeChatBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeChat();
+  });
+
+  minimizeChatBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    minimizeChat();
+  });
+
+  floatingChatBtn.addEventListener('click', () => {
+    maximizeChat();
+  });
+
+  sendChatBtn.addEventListener('click', () => {
+    sendMessage(chatInput.value);
+  });
+
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage(chatInput.value);
+    }
+  });
+
+  imageUploadInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file size (10MB limit)
+      if (file.size > 10 * 1024 * 1024) {
+        addMessage('Image too large. Please select an image smaller than 10MB.', false);
+        return;
+      }
+      
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        addMessage('Please select a valid image file.', false);
+        return;
+      }
+      
+      sendImage(file);
+      e.target.value = ''; // Reset file input
+    }
+  });
+
+  // Initialize with suggestions
+  setTimeout(() => {
+    const suggestions = ['New York', 'London', 'Tokyo', 'Mumbai', 'Cairo', 'Sydney'];
+    const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+    cityInput.placeholder = `Try searching for "${randomSuggestion}" or enter your city...`;
+  }, 2000);
+  // Expert Advice Modal
+const expertBtn = document.getElementById('expert-btn');
+const expertModal = document.getElementById('expert-modal');
+const closeExpert = document.getElementById('close-expert');
+const askExpert = document.getElementById('ask-expert');
+const expertInput = document.getElementById('expert-input');
+const expertResponse = document.getElementById('expert-response');
+
+expertBtn.addEventListener('click', () => {
+  expertModal.classList.remove('hidden');
+});
+
+closeExpert.addEventListener('click', () => {
+  expertModal.classList.add('hidden');
+});
+
+// Dummy response (replace with backend API later)
+askExpert.addEventListener('click', () => {
+  const question = expertInput.value.trim();
+  if (!question) return;
+  expertResponse.textContent = "Analyzing your question: " + question + " ... \n✅ Suggested advice: Use drip irrigation this week to save water.";
+  expertResponse.classList.remove('hidden');
+});
+
+
+  // Auto-search demo city on load (optional)
+  // Uncomment the line below to automatically search for a city on page load
+  // setTimeout(() => searchWeather('New York'), 1000);
+  // Delegate clicks for external agri links (opens in new tab)
+  document.addEventListener('click', (e) => {
+    const target = e.target;
+    if (target && target.classList && target.classList.contains('agri-link')) {
+      const url = target.dataset.url;
+      if (url) {
+        window.open(url, '_blank', 'noopener');
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>
